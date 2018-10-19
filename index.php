@@ -8,7 +8,7 @@
         <?php
         function muestraError($mensaje)
         {
-          echo "Error: $mensaje\n";
+          echo "<h3>Error: $mensaje </h3>\n";
           exit(1);
         }
 
@@ -32,20 +32,23 @@
         if (!empty($primerOperando) || !empty($segundoOperando) || !empty($operacion)) {
             if ($operacion == '+' || $operacion == '-' || $operacion == '*' || $operacion == '/') {
                 if (!ctype_digit($primerOperando) || !ctype_digit($segundoOperando)){
-                    mostrarError('Primer y segundo operando deben de ser números');
+                    muestraError('Primer y segundo operando deben de ser números');
                 } else {
                     switch ($operacion) {
                         case '+':
-                        $res = $primerOperando + $segundoOperando
+                        $res = $primerOperando + $segundoOperando;
                         break;
                         case '-':
-                        $res = $primerOperando - $segundoOperando
+                        $res = $primerOperando - $segundoOperando;
                         break;
                         case '*':
-                        $res = $primerOperando * $segundoOperando
+                        $res = $primerOperando * $segundoOperando;
                         break;
                         case '/':
-                        $res = $primerOperando / $segundoOperando
+                        if ($segundoOperando === '0') {
+                          muestraError('No es posible dividir por cero');
+                        }
+                        $res = $primerOperando / $segundoOperando;
                         break;
                         default:
                             // code...
