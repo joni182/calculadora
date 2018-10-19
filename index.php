@@ -5,6 +5,60 @@
         <title></title>
     </head>
     <body>
+        <?php
+        function muestraError($mensaje)
+        {
+          echo "Error: $mensaje\n";
+          exit(1);
+        }
 
+        $primerOperando = trim(isset($_GET['primerOp']) ? $_GET['primerOp'] : '0');
+        $segundoOperando = trim(isset($_GET['segundoOp']) ? $_GET['segundoOp'] : '0');
+        $operacion = trim(isset($_GET['oper']) ? $_GET['oper'] : '+');
+
+        ?>
+
+        <form action="" method="get">
+            <label for="primerOp">Primer operando</label>
+            <input id="primerOp" type="text" name="primerOp" value="<?= $primerOperando  ?>"><br>
+            <label for="segundoOp">Segundo operando</label>
+            <input id="segundoOp" type="text" name="segundoOp" value="<?= $segundoOperando  ?>"><br>
+            <label for="oper">Operación</label>
+            <input id="oper" type="text" name="oper" value="<?= $operacion  ?>"><br>
+            <input type="submit" value="Calcular">
+        </form>
+
+        <?php
+        if (!empty($primerOperando) || !empty($segundoOperando) || !empty($operacion)) {
+            if ($operacion == '+' || $operacion == '-' || $operacion == '*' || $operacion == '/') {
+                if (!ctype_digit($primerOperando) || !ctype_digit($segundoOperando)){
+                    mostrarError('Primer y segundo operando deben de ser números');
+                } else {
+                    switch ($operacion) {
+                        case '+':
+                        $res = $primerOperando + $segundoOperando
+                        break;
+                        case '-':
+                        $res = $primerOperando - $segundoOperando
+                        break;
+                        case '*':
+                        $res = $primerOperando * $segundoOperando
+                        break;
+                        case '/':
+                        $res = $primerOperando / $segundoOperando
+                        break;
+                        default:
+                            // code...
+                        break;
+                    }
+                }
+            } else {
+                muestraError('Error: No se ha introducido una operación correcta: + - * /');
+            }
+
+        }
+        ?>
+
+        <h3><?= $res  ?></h3>
     </body>
 </html>
