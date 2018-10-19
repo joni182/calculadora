@@ -24,7 +24,13 @@
             <label for="segundoOp">Segundo operando</label>
             <input id="segundoOp" type="text" name="segundoOp" value="<?= $segundoOperando  ?>"><br>
             <label for="oper">Operación</label>
-            <input id="oper" type="text" name="oper" value="<?= $operacion  ?>"><br>
+            <!--<input id="oper" type="text" name="oper" value=""><br> -->
+
+            <select id='oper' name="oper">
+              <?php foreach (['+', '-', '*'. '/'] as $op): ?>
+                <? "<option value="$op">$op</option>"  ?>
+              <?php endforeach; ?>
+            </select>
             <input type="submit" value="Calcular">
         </form>
 
