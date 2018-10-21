@@ -12,43 +12,47 @@
           exit(1);
         }
 
-        $primerOperando = trim(isset($_GET['primerOp']) ? $_GET['primerOp'] : '0');
-        $segundoOperando = trim(isset($_GET['segundoOp']) ? $_GET['segundoOp'] : '0');
+        $primerOp = trim(isset($_GET['primerOp']) ? $_GET['primerOp'] : '0');
+        $segundoOp = trim(isset($_GET['segundoOp']) ? $_GET['segundoOp'] : '0');
         $operacion = trim(isset($_GET['oper']) ? $_GET['oper'] : '+');
 
         ?>
 
         <form action="" method="get">
             <label for="primerOp">Primer operando</label>
-            <input id="primerOp" type="text" name="primerOp" value="<?= $primerOperando  ?>"><br>
+            <input id="primerOp" type="text" name="primerOp" value="<?= $primerOp  ?>"><br>
             <label for="segundoOp">Segundo operando</label>
-            <input id="segundoOp" type="text" name="segundoOp" value="<?= $segundoOperando  ?>"><br>
+            <input id="segundoOp" type="text" name="segundoOp" value="<?= $segundoOp  ?>"><br>
             <label for="oper">Operación</label>
-            <input id="oper" type="text" name="oper" value="<?= $operacion  ?>"><br>
+            <select id='oper' name="oper">
+              <?php foreach (['+', '-', '*', '/'] as $op): ?>
+                <option value='<?= $op ?>' <?= $op == $operacion ? 'selected' : ''  ?>><?= $op ?></option>
+              <?php endforeach; ?>
+            </select>
             <input type="submit" value="Calcular">
         </form>
 
         <?php
-        if (!empty($primerOperando) || !empty($segundoOperando) || !empty($operacion)) {
+        if (!empty($primerOp) || !empty($segundoOp) || !empty($operacion)) {
             if ($operacion == '+' || $operacion == '-' || $operacion == '*' || $operacion == '/') {
-                if (!ctype_digit($primerOperando) || !ctype_digit($segundoOperando)){
+                if (!ctype_digit($primerOp) || !ctype_digit($segundoOp)){
                     muestraError('Primer y segundo operando deben de ser números');
                 } else {
                     switch ($operacion) {
                         case '+':
-                        $res = $primerOperando + $segundoOperando;
+                        $res = $primerOp + $segundoOp;
                         break;
                         case '-':
-                        $res = $primerOperando - $segundoOperando;
+                        $res = $primerOp - $segundoOp;
                         break;
                         case '*':
-                        $res = $primerOperando * $segundoOperando;
+                        $res = $primerOp * $segundoOp;
                         break;
                         case '/':
-                        if ($segundoOperando === '0') {
-                          muestraError('No es posible dividir por cero');
+                        if ($segundoOp === '0') {
+                          muestraError("Indeterminado, no existe ningún número que pueda expresarse como $primerOp/0");
                         }
-                        $res = $primerOperando / $segundoOperando;
+                        $res = $primerOp / $segundoOp;
                         break;
                         default:
                             // code...
