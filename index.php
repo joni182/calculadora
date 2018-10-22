@@ -7,7 +7,7 @@
     <body>
         <?php
         const OP = ['+', '-', '*', '**', '/', '%'];
-        const PAR = ['op', 'op1', 'op2'];
+        const PAR = ['oper', 'primerOp', 'segundoOp'];
         function muestraError($mensaje)
         {
           echo "<h3>Error: $mensaje </h3>\n";
@@ -46,7 +46,7 @@
             if (!is_numeric($segundoOp)) {
                 $error[] = 'El primer operador no es un número';
             }
-            if (!in_array($operacion, PAR)) {
+            if (!in_array($operacion, OP)) {
                 $error[] = ' El operador no es válido';
             }
         }
