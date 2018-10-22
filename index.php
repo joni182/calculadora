@@ -6,16 +6,50 @@
     </head>
     <body>
         <?php
+        const OP = ['+', '-', '*', '**', '/', '%'];
+        const PAR = ['oper', 'primerOp', 'segundoOp'];
         function muestraError($mensaje)
         {
           echo "<h3>Error: $mensaje </h3>\n";
           exit(1);
         }
 
-        $primerOp = trim(isset($_GET['primerOp']) ? $_GET['primerOp'] : '0');
-        $segundoOp = trim(isset($_GET['segundoOp']) ? $_GET['segundoOp'] : '0');
-        $operacion = trim(isset($_GET['oper']) ? $_GET['oper'] : '+');
+        function selected($op1, $op2)
+        {
+            return $op1 == $op2 ? 'selected' : '';
+        }
+        // Comprobación de parámetros
+        $error = [];
+        $par = array_keys($_GET);
+        sort($par);
 
+        $primerOp = $segundoOp = $operacion = null;
+
+        if (empty($_GET)){
+            $primerOp = '0';
+            $segundoOp = '0';
+            $operacion = '+';
+        } elseif ($par == PAR) {
+            $primerOp = trim($_GET['primerOp']);
+            $segundoOp = trim($_GET['segundoOp']);
+            $operacion = trim($_GET['oper']);
+        } else {
+            $error[] = 'Los parametros recibidos no son los correctos';
+        }
+
+        $res = "";
+
+        if (empty($error)) {
+            if (!is_numeric($primerOp)) {
+                $error[] = 'El primer operador no es un número';
+            }
+            if (!is_numeric($segundoOp)) {
+                $error[] = 'El primer operador no es un número';
+            }
+            if (!in_array($operacion, OP)) {
+                $error[] = ' El operador no es válido';
+            }
+        }
         ?>
 
         <form action="" method="get">
@@ -25,47 +59,50 @@
             <input id="segundoOp" type="text" name="segundoOp" value="<?= $segundoOp  ?>"><br>
             <label for="oper">Operación</label>
             <select id='oper' name="oper">
-              <?php foreach (['+', '-', '*', '/'] as $op): ?>
-                <option value='<?= $op ?>' <?= $op == $operacion ? 'selected' : ''  ?>><?= $op ?></option>
-              <?php endforeach; ?>
+                <?php foreach (OP as $op): ?>
+                    <option value='<?= $op ?>' <?= selected($op, $operacion) ?>>
+                        <?= $op ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <input type="submit" value="Calcular">
         </form>
 
-        <?php
-        if (!empty($primerOp) || !empty($segundoOp) || !empty($operacion)) {
-            if ($operacion == '+' || $operacion == '-' || $operacion == '*' || $operacion == '/') {
-                if (!ctype_digit($primerOp) || !ctype_digit($segundoOp)){
-                    muestraError('Primer y segundo operando deben de ser números');
-                } else {
-                    switch ($operacion) {
-                        case '+':
-                        $res = $primerOp + $segundoOp;
-                        break;
-                        case '-':
-                        $res = $primerOp - $segundoOp;
-                        break;
-                        case '*':
-                        $res = $primerOp * $segundoOp;
-                        break;
-                        case '/':
-                        if ($segundoOp === '0') {
-                          muestraError("Indeterminado, no existe ningún número que pueda expresarse como $primerOp/0");
-                        }
-                        $res = $primerOp / $segundoOp;
-                        break;
-                        default:
-                            // code...
-                        break;
-                    }
+
+        <?php if (empty($error)): ?>
+            <?php switch ($operacion) {
+                case '+':
+                $res = $primerOp + $segundoOp;
+                break;
+                case '-':
+                $res = $primerOp - $segundoOp;
+                break;
+                case '*':
+                $res = $primerOp * $segundoOp;
+                break;
+                case '**':
+                $res = $primerOp ** $segundoOp;
+                break;
+                case '%':
+                $res = $primerOp % $segundoOp;
+                break;
+                case '/':
+                if ($segundoOp === '0') {
+                  muestraError("Indeterminado, no existe ningún número que pueda expresarse como $primerOp/0");
                 }
-            } else {
-                muestraError('Error: No se ha introducido una operación correcta: + - * /');
-            }
+                $res = $primerOp / $segundoOp;
+                break;
+                default:
+                    // code...
+                break;
+            } ?>
 
-        }
-        ?>
+            <h3><?= $res  ?></h3>
 
-        <h3><?= $res  ?></h3>
+            <?php else: ?>
+                <?php foreach ($error as $value): ?>
+                    <h3><?= $value ?></h3>
+                <?php endforeach; ?>
+            <?php endif; ?>
     </body>
 </html>
