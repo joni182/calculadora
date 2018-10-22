@@ -6,10 +6,16 @@
     </head>
     <body>
         <?php
+        const OP = ['+', '-', '*', '/'];
         function muestraError($mensaje)
         {
           echo "<h3>Error: $mensaje </h3>\n";
           exit(1);
+        }
+
+        function selected($op1, $op2)
+        {
+            return $op1 == $op2 ? 'selected' : '';
         }
 
         $primerOp = trim(isset($_GET['primerOp']) ? $_GET['primerOp'] : '0');
@@ -25,9 +31,11 @@
             <input id="segundoOp" type="text" name="segundoOp" value="<?= $segundoOp  ?>"><br>
             <label for="oper">Operación</label>
             <select id='oper' name="oper">
-              <?php foreach (['+', '-', '*', '/'] as $op): ?>
-                <option value='<?= $op ?>' <?= $op == $operacion ? 'selected' : ''  ?>><?= $op ?></option>
-              <?php endforeach; ?>
+                <?php foreach (OP as $op): ?>
+                    <option value='<?= $op ?>' <?= selected($op, $operacion) ?>>
+                        <?= $op ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <input type="submit" value="Calcular">
         </form>
