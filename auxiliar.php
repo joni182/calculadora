@@ -21,7 +21,7 @@ function formulario($op1, $op2, $operacion)
 <?php
 }
 
-function sw($op1, $op2, $op)
+function calcula($op1, $op2, $op)
 {
   switch ($op) {
       case '+':

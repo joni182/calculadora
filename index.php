@@ -47,7 +47,7 @@
         <?php formulario($primerOp, $segundoOp, $operacion) ?>
         <?php if (empty($error)): ?>
 
-            <h3><?= $res = sw($primerOp, $segundoOp, $operacion)  ?></h3>
+            <h3><?= calucula($primerOp, $segundoOp, $operacion)  ?></h3>
 
             <?php else: ?>
                 <?php foreach ($error as $value): ?>
