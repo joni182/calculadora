@@ -9,23 +9,18 @@
         include 'auxiliar.php';
 
         const OP = ['+', '-', '*', '**', '/', '%'];
-        const PAR = ['oper', 'primerOp', 'segundoOp'];
+        const PAR = ['primerOp' => 0, 'segundoOp' => 0, 'operacion' => '+'];
 
         // Comprobación de parámetros
         $error = [];
-        $par = array_keys($_GET);
-        sort($par);
 
         $primerOp = $segundoOp = $operacion = null;
 
         if (empty($_GET)){
-            $primerOp = '0';
-            $segundoOp = '0';
-            $operacion = '+';
-        } elseif ($par == PAR) {
-            $primerOp = trim($_GET['primerOp']);
-            $segundoOp = trim($_GET['segundoOp']);
-            $operacion = trim($_GET['oper']);
+            extract(PAR);
+        } elseif (empty(array_diff_key($_GET, PAR)) &&
+                  empty(array_diff_key(PAR, $_GET))) {
+            extract($_GET, EXTR_IF_EXISTS);
         } else {
             $error[] = 'Los parametros recibidos no son los correctos';
         }
@@ -47,7 +42,7 @@
         <?php formulario($primerOp, $segundoOp, $operacion) ?>
         <?php if (empty($error)): ?>
 
-            <h3><?= calucula($primerOp, $segundoOp, $operacion)  ?></h3>
+            <h3><?= calcula($primerOp, $segundoOp, $operacion)  ?></h3>
 
             <?php else: ?>
                 <?php foreach ($error as $value): ?>

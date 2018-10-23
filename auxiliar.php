@@ -8,8 +8,8 @@ function formulario($op1, $op2, $operacion)
       <input id="primerOp" type="text" name="primerOp" value="<?= $op1  ?>"><br>
       <label for="segundoOp">Segundo operando</label>
       <input id="segundoOp" type="text" name="segundoOp" value="<?= $op2  ?>"><br>
-      <label for="oper">Operación</label>
-      <select id='oper' name="oper">
+      <label for="operacion">Operación</label>
+      <select id='operacion' name="operacion">
           <?php foreach (OP as $op): ?>
               <option value='<?= $op ?>' <?= selected($op, $operacion) ?>>
                   <?= $op ?>
