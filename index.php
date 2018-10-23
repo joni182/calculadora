@@ -13,10 +13,8 @@
 
         // Comprobación de parámetros
         $error = [];
-
-        $primerOp = $segundoOp = $operacion = null;
+        extract(PAR);
         if (empty($_GET)){
-            extract(PAR);
         } elseif (empty(array_diff_key($_GET, PAR)) &&
                   empty(array_diff_key(PAR, $_GET))) {
 
