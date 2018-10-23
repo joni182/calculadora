@@ -15,12 +15,12 @@
         $error = [];
 
         $primerOp = $segundoOp = $operacion = null;
-
         if (empty($_GET)){
             extract(PAR);
         } elseif (empty(array_diff_key($_GET, PAR)) &&
                   empty(array_diff_key(PAR, $_GET))) {
-            extract($_GET, EXTR_IF_EXISTS);
+
+            extract(array_map('trim', $_GET), EXTR_IF_EXISTS);
         } else {
             $error[] = 'Los parametros recibidos no son los correctos';
         }
