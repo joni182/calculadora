@@ -1,51 +1,23 @@
-<!DOCTYPE html>
-<html lang="es" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-    </head>
-    <body>
+
         <?php
         include 'auxiliar.php';
+
+        cabecera();
 
         const OP = ['+', '-', '*', '**', '/', '%'];
         const PAR = ['primerOp' => 0, 'segundoOp' => 0, 'operacion' => '+'];
 
-        // Comprobación de parámetros
         $error = [];
-        extract(PAR);
-        if (empty($_GET)){
-        } elseif (empty(array_diff_key($_GET, PAR)) &&
-                  empty(array_diff_key(PAR, $_GET))) {
 
-            extract(array_map('trim', $_GET), EXTR_IF_EXISTS);
+        extract(array_map('trim', compruebaParametros(PAR, $error)));
+        comprobarValores($primerOp, $segundoOp, $operacion, OP, $error);
+        formulario($primerOp, $segundoOp, $operacion);
+
+        if (empty($error)){
+            mostrarResultado($primerOp, $segundoOp, $operacion);
         } else {
-            $error[] = 'Los parametros recibidos no son los correctos';
+            motrarErrores($error);
         }
 
-        $res = "";
-
-        if (empty($error)) {
-            if (!is_numeric($primerOp)) {
-                $error[] = 'El primer operador no es un número';
-            }
-            if (!is_numeric($segundoOp)) {
-                $error[] = 'El primer operador no es un número';
-            }
-            if (!in_array($operacion, OP)) {
-                $error[] = ' El operador no es válido';
-            }
-        }
+        pie();
         ?>
-        <?php formulario($primerOp, $segundoOp, $operacion) ?>
-        <?php if (empty($error)): ?>
-
-            <h3><?= calcula($primerOp, $segundoOp, $operacion)  ?></h3>
-
-            <?php else: ?>
-                <?php foreach ($error as $value): ?>
-                    <h3><?= $value ?></h3>
-                <?php endforeach; ?>
-            <?php endif; ?>
-    </body>
-</html>
